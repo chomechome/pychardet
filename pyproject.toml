@@ -3,7 +3,7 @@ name = "pychardet"
 version = "0.0.7"
 description = "Fast Universal Encoding Detection in Python"
 authors = [
-    "Vladislav Blinov",
+    "Vladislav Blinov <cunningplan@yandex.ru>",
 ]
 repository = "https://github.com/chomechome/pychardet"
 packages = [

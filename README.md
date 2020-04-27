@@ -4,19 +4,21 @@ This library is a python binding to [universal chardet](https://github.com/BYVoi
 ### Python 3
 ```python
 >>> from pychardet import detect_encoding
->>> detect_encoding('El castellano es la lengua española'.encode('iso-8859-1'))
-{'encoding': 'iso-8859-1', 'confidence': 0.8775989413261414}
+>>> encoded = 'El español o castellano es una lengua romance procedente del latín hablado'.encode('iso-8859-1')
+>>> detect_encoding(encoded)
+Encoding(name=<EncodingName.ISO_8859_1: 'iso-8859-1'>, confidence=0.835808515548706)
 ```
 ### Python 2
 ```python
 >>> from pychardet import detect_encoding
->>> detect_encoding(u"Réseau Démographie de l'Agence universitaire de la francophonie".encode('utf8'))
-{'encoding': 'utf-8', 'confidence': 0.7524999976158142}
+>>> encoded = u'El español o castellano es una lengua romance procedente del latín hablado'.encode('iso-8859-1')
+>>> detect_encoding(encoded)
+Encoding(name=<EncodingName.ISO_8859_1: 'iso-8859-1'>, confidence=0.835808515548706)
 ```
 ## Installation
 
 ### Requirements
-[Cython](http://docs.cython.org/src/quickstart/install.html)
+[Cython](http://docs.cython.org/src/quickstart/install.html) >= 0.24
 
 ### From PyPI
 ```bash
