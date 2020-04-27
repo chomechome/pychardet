@@ -1,0 +1,27 @@
+[tool.poetry]
+name = "pychardet"
+version = "0.0.7"
+description = "Fast Universal Encoding Detection in Python"
+authors = [
+    "Vladislav Blinov",
+]
+repository = "https://github.com/chomechome/pychardet"
+packages = [
+    { include = "pychardet/encoding_detector.pyx" },
+]
+build = "build.py"
+
+[tool.poetry.dependencies]
+python = ">=2.7"
+Cython = ">=0.24"
+enum34 = { "version" = "^1.1.6", "python" = ">=2.7 || <3.4" }
+
+[tool.poetry.dev-dependencies]
+pytest = "*"
+pytest-cov = "*"
+tox-travis = "*"
+more-itertools = "*"
+
+[build-system]
+requires = ["poetry>=1.0.5"]
+build-backend = "poetry.masonry.api"

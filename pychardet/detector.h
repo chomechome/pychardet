@@ -1,5 +1,5 @@
-#include "src/nscore.h"
-#include "src/nsUniversalDetector.h"
+#include "uchardet/src/nscore.h"
+#include "uchardet/src/nsUniversalDetector.h"
 
 class UniversalDetectorWithConfidence : public nsUniversalDetector {
     protected:

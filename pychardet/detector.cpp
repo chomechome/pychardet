@@ -1,4 +1,4 @@
-#include "src/nsCharSetProber.h"
+#include "uchardet/src/nsCharSetProber.h"
 #include "detector.h"
 #include <string.h>
 #include <stdlib.h>
@@ -73,51 +73,72 @@ bool UniversalDetectorWithConfidence::IsDone()
 
 void UniversalDetectorWithConfidence::DataEnd()
 {
-    if (!mGotData)
-    {
-        // we haven't got any data yet, return immediately
-        // caller program sometimes call DataEnd before anything has been sent to detector
-        return;
-    }
+  if (!mGotData)
+  {
+    // we haven't got any data yet, return immediately
+    // caller program sometimes call DataEnd before anything has been sent to detector
+    return;
+  }
 
-    if (mDetectedCharset)
-    {
-        mDone = PR_TRUE;
-        Report(mDetectedCharset);
-        return;
-    }
-
+  if (! mDetectedCharset)
+  {
     switch (mInputState)
     {
-        case eHighbyte:
-            {
-                float proberConfidence;
-                float maxProberConfidence = (float)0.0;
-                PRInt32 maxProber = 0;
-
-                for (PRInt32 i = 0; i < NUM_OF_CHARSET_PROBERS; i++)
-                {
-                    if (mCharSetProbers[i])
-                    {
-                        proberConfidence = mCharSetProbers[i]->GetConfidence();
-                        if (proberConfidence > maxProberConfidence)
-                        {
-                            maxProberConfidence = proberConfidence;
-                            maxProber = i;
-                        }
-                    }
-                }
-                //do not report anything because we are not confident of it,
-                //that's in fact a negative answer
-                if (maxProberConfidence > MINIMUM_THRESHOLD)
-                {
-                    Report(mCharSetProbers[maxProber]->GetCharSetName(), maxProberConfidence);
-                }
-            }
-            break;
-        case eEscAscii:
-            break;
-        default:
-            break;
+    case eEscAscii:
+    case ePureAscii:
+      if (mNbspFound)
+      {
+          /* ISO-8859-1 is a good result candidate for ASCII + NBSP.
+           * (though it could have been any ISO-8859 encoding). */
+          mDetectedCharset = "ISO-8859-1";
+      }
+      else
+      {
+          /* ASCII with the ESC character (or the sequence "~{") is still
+           * ASCII until proven otherwise. */
+          mDetectedCharset = "ASCII";
+      }
+    default:
+      break;
     }
+  }
+
+  if (mDetectedCharset)
+  {
+    mDone = PR_TRUE;
+    Report(mDetectedCharset);
+    return;
+  }
+
+  switch (mInputState)
+  {
+  case eHighbyte:
+    {
+      float proberConfidence;
+      float maxProberConfidence = (float)0.0;
+      PRInt32 maxProber = 0;
+
+      for (PRInt32 i = 0; i < NUM_OF_CHARSET_PROBERS; i++)
+      {
+        if (mCharSetProbers[i])
+        {
+          proberConfidence = mCharSetProbers[i]->GetConfidence();
+          if (proberConfidence > maxProberConfidence)
+          {
+            maxProberConfidence = proberConfidence;
+            maxProber = i;
+          }
+        }
+      }
+      //do not report anything because we are not confident of it, that's in fact a negative answer
+      if (maxProberConfidence > MINIMUM_THRESHOLD)
+        Report(mCharSetProbers[maxProber]->GetCharSetName(), maxProberConfidence);
+    }
+    break;
+  case eEscAscii:
+    break;
+  default:
+    ;
+  }
+  return;
 }

@@ -1,0 +1,19 @@
+language: python
+
+python:
+  - "2.7"
+  - "3.4"
+  - "3.5"
+  - "3.6"
+  - "3.7"
+
+dist: xenial
+
+install:
+  - "pip install poetry==1.0.5"
+  - "poetry config virtualenvs.create false"
+  - "poetry install --no-interaction --no-ansi"
+
+cache: pip
+
+script: tox
