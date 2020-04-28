@@ -6,10 +6,15 @@ python:
   - "3.5"
   - "3.6"
   - "3.7"
+  - "3.8"
 
 dist: xenial
 
+before_install:
+  - "git submodule update --init --recursive"
+
 install:
+  - "pip install -U pip"
   - "pip install poetry==1.0.5"
   - "poetry config virtualenvs.create false"
   - "poetry install --no-interaction --no-ansi"

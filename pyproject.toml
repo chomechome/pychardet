@@ -7,9 +7,17 @@ authors = [
 ]
 repository = "https://github.com/chomechome/pychardet"
 packages = [
-    { include = "pychardet/encoding_detector.pyx" },
+    { include = "pychardet" },
+]
+include = [
+    "pychardet/uchardet/src/**/*"
+]
+exclude = [
+    "pychardet/uchardet/*",
+    "pychardet/uchardet/.*",
 ]
 build = "build.py"
+readme = "README.rst"
 
 [tool.poetry.dependencies]
 python = ">=2.7"
