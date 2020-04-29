@@ -14,14 +14,7 @@ install:
 
 cache: pip
 
-jobs:
-  include:
-    - stage: codestyle
-      script:
-        - "make lint"
-    - stage: test
-      script:
-        - "make test"
-    - stage: coverage
-      script:
-        - "make coverage"
+script:
+  - "make lint"
+  - "make test"
+  - "make coverage"
