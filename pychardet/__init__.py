@@ -1,18 +1,17 @@
-# coding=utf-8
-import collections
 import enum
+from typing import NamedTuple, Optional
 
-import six
 from pychardet.encoding_detector import EncodingDetector
 
 __name__ = "pychardet"
 __version__ = "0.0.7"
 
-Encoding = collections.namedtuple("Encoding", ["name", "confidence"])
+
+Encoding = NamedTuple("Encoding", [("name", Optional[str]), ("confidence", float)])
 
 
 @enum.unique
-class EncodingName(six.text_type, enum.Enum):
+class EncodingName(str, enum.Enum):
     ASCII = "ascii"
     BIG5 = "big5"
     EUC_JP = "euc-jp"
@@ -66,7 +65,7 @@ class EncodingName(six.text_type, enum.Enum):
     X_ISO_10646_UCS_4_34121 = "x-iso-10646-ucs-4-34121"
 
     @classmethod
-    def _missing_(cls, value):
+    def _missing_(cls, value: str):
         aliases = {
             "mac-cyrillic": EncodingName.MAC_CYRILLIC,
             "mac-centraleurope": EncodingName.MAC_CENTRAL_EUROPE,
@@ -76,12 +75,7 @@ class EncodingName(six.text_type, enum.Enum):
         return super()._missing_(value)
 
 
-def detect_encoding(byte_str):
-    """
-    :param six.binary_type byte_str: Byte string with unknown encoding
-    :return Detected encoding with confidence
-    :rtype: Encoding
-    """
+def detect_encoding(byte_str: bytes) -> Encoding:
     with EncodingDetector() as detector:
         detector.feed(byte_str)
         encoding, confidence = detector.result
