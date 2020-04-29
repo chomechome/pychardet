@@ -40,8 +40,20 @@ def _mark_known_failures(path):
     ("path", "encoding"),
     [_mark_known_failures(path) for path in _get_test_files()],
 )
-def test_detect_encoding(path, encoding):
+def test_detect_on_files(path, encoding):
     with open(path, "rb") as f:
         text = f.read()
 
     assert detect_encoding(text).name == EncodingName(encoding)
+
+
+@pytest.mark.parametrize(
+    ("text", "encoding"),
+    [
+        ("русский", EncodingName.UTF_8),
+        ("français", EncodingName.UTF_16),
+        ("español", EncodingName.UTF_32),
+    ]
+)
+def test_detect_on_text(text, encoding):
+    assert detect_encoding(text.encode(encoding)).name == encoding

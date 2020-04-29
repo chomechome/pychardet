@@ -3,3 +3,12 @@
 *.iml
 out
 gen
+.DS_Store
+
+# Tests
+.pytest_cache
+.tox
+
+# Distributions
+dist
+build
