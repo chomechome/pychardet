@@ -10,12 +10,12 @@ def detector():
     return EncodingDetector()
 
 
-@pytest.fixture(scope="session")
+@pytest.fixture(scope='session')
 def unicode_text():
-    return six.text_type("Encodings are fun!")
+    return six.text_type('Encodings are fun!')
 
 
-@pytest.fixture(scope="session")
+@pytest.fixture(scope='session')
 def ascii_text(unicode_text):
     return unicode_text.encode(EncodingName.ASCII)
 
