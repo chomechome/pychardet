@@ -9,8 +9,6 @@ pretty:
 
 lint:
 	$(PYTHON) flake8 --jobs 4 --statistics $(CODE)
-	$(PYTHON) pylint --jobs 4 --rcfile=setup.cfg $(CODE)
-	$(PYTHON) mypy $(CODE)
 
 test:
 	$(PYTHON) pytest -n auto --boxed tests
